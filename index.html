@@ -1,0 +1,48 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Locality Info Viewer</title>
+</head>
+<body>
+    <h1>Locality Info Viewer</h1>
+    <label for="localityId">Enter Locality ID:</label>
+    <input type="text" id="localityId" placeholder="Enter Locality ID">
+    <button onclick="fetchLocalityInfo()">Get Info</button>
+
+    <div id="result-container"></div>
+
+    <script>
+        function fetchLocalityInfo() {
+            // Get the Locality ID from the input field
+            const localityId = document.getElementById('localityId').value;
+
+            // Fetch JSON data and display relevant information
+            fetch('https://github.com/aamash1wnl/merge_interface/blob/main/mock_shet.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Find the matching locality in the data array
+                    const locality = data.find(entry => entry['Locality ID'] === localityId);
+
+                    if (locality) {
+                        // Display information about the locality
+                        const resultContainer = document.getElementById('result-container');
+                        resultContainer.innerHTML = `<p><strong>Locality ID:</strong> ${locality['Locality ID']}</p>
+                                                    <p><strong>Locality Name:</strong> ${locality['Locality Name']}</p>
+                                                    <p><strong>City ID:</strong> ${locality['City ID']}</p>
+                                                    <p><strong>City Name:</strong> ${locality['City Name']}</p>
+                                                    <p><strong>Latitude:</strong> ${locality['longlat_y']}</p>
+                                                    <p><strong>Longitude:</strong> ${locality['longlat_x']}</p>`;
+                    } else {
+                        // Display a message if the locality ID is not found
+                        alert('Locality ID not found.');
+                    }
+                })
+                .catch(error => console.error('Error fetching JSON:', error));
+        }
+    </script>
+</body>
+</html>
